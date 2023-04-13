@@ -4,6 +4,7 @@ plugins {
     id 'com.google.gms.google-services'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+
 }
 
 android {
@@ -75,4 +76,6 @@ dependencies {
     implementation "androidx.room:room-ktx:2.5.1"
     androidTestImplementation "androidx.room:room-testing:2.5.1"
     annotationProcessor "androidx.room:room-compiler:2.5.1"
+    // Kotlin coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 }

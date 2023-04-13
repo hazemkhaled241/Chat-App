@@ -1,15 +1,26 @@
 package com.example.chat.data.repository
 
 import com.example.chat.data.local.Country
+import com.example.chat.data.local.dao.CountryDao
 import com.example.chat.domain.repository.local.CountryRepository
-import com.example.chat.utils.Resource
+import javax.inject.Inject
 
-class CountryRepositoryImp :CountryRepository{
+class CountryRepositoryImp @Inject constructor(
+   private val countryDao:CountryDao
+) :CountryRepository{
     override suspend fun insertCountry(country: Country) {
-        TODO("Not yet implemented")
+        countryDao.insert(country)
     }
 
-    override suspend fun getAllCountry(): Resource<ArrayList<Country>, String> {
-        TODO("Not yet implemented")
+    override suspend fun getAllCountries():List<Country> {
+        return try {
+            countryDao.getAllCountry()
+
+       }
+       catch (e:Exception){
+       throw e
+       }
+
+
     }
 }
