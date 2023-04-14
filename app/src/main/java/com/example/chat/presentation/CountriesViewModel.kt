@@ -16,7 +16,7 @@ class CountriesViewModel @Inject constructor(
     private val _countryState = MutableStateFlow<List<Country>?>(null)
     val countryState: StateFlow<List<Country>?> get() = _countryState
     //val getAllData: LiveData<List<Country>> = GetAllCountriesUseCase(countryRepositoryImp).invoke()
-     fun getAllCountries() {
+     fun fetchAllCountries() {
     viewModelScope.launch {
         _countryState.value = getAllCountriesUseCase.invoke()
     }

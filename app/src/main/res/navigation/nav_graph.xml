@@ -9,5 +9,18 @@
         android:id="@+id/loginFragment"
         android:name="com.example.chat.presentation.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_allCountriesFragment"
+            app:destination="@id/allCountriesFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/from_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/allCountriesFragment"
+        android:name="com.example.chat.presentation.AllCountriesFragment"
+        android:label="fragment_all_countries"
+        tools:layout="@layout/fragment_all_countries" />
 </navigation>

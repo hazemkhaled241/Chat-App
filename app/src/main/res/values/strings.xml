@@ -7,5 +7,7 @@
     <string name="txt_enter_mob_no">Enter Mobile Number</string>
     <string name="confirmation">We will send you an <b> One Time Password </b>to this mobile number</string>
     <string name="verify">Verify</string>
+    <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
+
 
 </resources>

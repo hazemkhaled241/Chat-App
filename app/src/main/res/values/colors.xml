@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="colorPrimary">#394152</color>
     <color name="colorPrimaryLt">#615C5585</color>
+    <color name="color_country">#212121</color>
 </resources>
