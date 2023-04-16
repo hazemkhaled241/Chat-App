@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.chat.presentation.LoginFragment"
+        android:name="com.example.chat.presentation.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -17,10 +17,21 @@
             app:exitAnim="@anim/from_left"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="countryItem"
+            app:argType="com.example.chat.data.local.Country" />
     </fragment>
     <fragment
         android:id="@+id/allCountriesFragment"
         android:name="com.example.chat.presentation.AllCountriesFragment"
         android:label="fragment_all_countries"
-        tools:layout="@layout/fragment_all_countries" />
+        tools:layout="@layout/fragment_all_countries" >
+        <action
+            android:id="@+id/action_allCountriesFragment_to_loginFragment2"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/from_right" />
+    </fragment>
 </navigation>

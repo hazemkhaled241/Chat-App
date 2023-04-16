@@ -1,4 +1,4 @@
-package com.example.chat.presentation.adapter
+package com.example.chat.presentation.login.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -9,18 +9,22 @@ import com.example.chat.databinding.CountryItemBinding
 
 class CountriesAdapter : RecyclerView.Adapter<CountriesAdapter.MyViewHolder>() {
     private var countries: ArrayList<Country> = arrayListOf()
+    var onItemClicked: OnItemClick<Country>? =null
 
     inner class MyViewHolder(private val binding: CountryItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(country: Country, position: Int) {
             binding.country = country
+            binding.layout.setOnClickListener {
+                onItemClicked?.onItemClicked(country,position)
+            }
         }
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): CountriesAdapter.MyViewHolder {
+    ): MyViewHolder {
         return MyViewHolder(
             CountryItemBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
@@ -28,7 +32,7 @@ class CountriesAdapter : RecyclerView.Adapter<CountriesAdapter.MyViewHolder>() {
         )
     }
 
-    override fun onBindViewHolder(holder: CountriesAdapter.MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bind(countries[position], position)
     }
 

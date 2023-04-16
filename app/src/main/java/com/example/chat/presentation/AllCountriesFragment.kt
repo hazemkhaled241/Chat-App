@@ -7,16 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.chat.data.local.Country
 import com.example.chat.databinding.FragmentAllCountriesBinding
-import com.example.chat.presentation.adapter.CountriesAdapter
+import com.example.chat.presentation.login.adapter.CountriesAdapter
+import com.example.chat.presentation.login.adapter.OnItemClick
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 @AndroidEntryPoint
-class AllCountriesFragment : Fragment() {
+class AllCountriesFragment : Fragment(), OnItemClick<Country> {
     private var _binding: FragmentAllCountriesBinding? = null
     private val binding get() = _binding!!
-    private val countriesAdapter:CountriesAdapter by lazy { CountriesAdapter() }
+    private val countriesAdapter: CountriesAdapter by lazy { CountriesAdapter() }
     private val countriesViewModel: CountriesViewModel by viewModels()
 
     override fun onCreateView(
@@ -30,23 +32,30 @@ class AllCountriesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.rvCountries.adapter=countriesAdapter
+        binding.rvCountries.adapter = countriesAdapter
+        countriesAdapter.onItemClicked=this
         countriesViewModel.fetchAllCountries()
         observe()
+
 
     }
 
     private fun observe() {
         viewLifecycleOwner.lifecycleScope.launch {
             countriesViewModel.countryState.collect {
-                 if (it != null) {
-                     countriesAdapter.updateList(it as ArrayList<Country>)
+                if (it != null) {
+                    countriesAdapter.updateList(it as ArrayList<Country>)
 
-                 }
-
-             }
+                }
 
             }
+
         }
+    }
+
+    override fun onItemClicked(item: Country, position: Int) {
+    val action= AllCountriesFragmentDirections.actionAllCountriesFragmentToLoginFragment2(item)
+        findNavController().navigate(action)
+    }
 
 }

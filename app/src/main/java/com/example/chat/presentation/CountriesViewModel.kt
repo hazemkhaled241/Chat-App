@@ -8,18 +8,20 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 @HiltViewModel
 class CountriesViewModel @Inject constructor(
     private val getAllCountriesUseCase: GetAllCountriesUseCase
-):ViewModel()
-     {
+) : ViewModel() {
+    private var countries: List<Country> = arrayListOf()
     private val _countryState = MutableStateFlow<List<Country>?>(null)
     val countryState: StateFlow<List<Country>?> get() = _countryState
-    //val getAllData: LiveData<List<Country>> = GetAllCountriesUseCase(countryRepositoryImp).invoke()
-     fun fetchAllCountries() {
-    viewModelScope.launch {
-        _countryState.value = getAllCountriesUseCase.invoke()
+    fun fetchAllCountries() {
+        viewModelScope.launch {
+            _countryState.value = getAllCountriesUseCase.invoke()
+        }
     }
-    }
+
+
 
 }
