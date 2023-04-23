@@ -1,4 +1,4 @@
-package com.example.chat.presentation
+package com.example.chat.presentation.login
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -15,6 +15,7 @@ import com.example.chat.data.local.Country
 import com.example.chat.databinding.FragmentAllCountriesBinding
 import com.example.chat.presentation.login.adapter.CountriesAdapter
 import com.example.chat.presentation.login.adapter.OnItemClick
+import com.example.chat.presentation.login.viewmodel.CountriesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -76,8 +77,8 @@ class AllCountriesFragment : Fragment(), OnItemClick<Country> {
 
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
                 override fun onQueryTextSubmit(query: String?): Boolean {
-               if(query!=null)
-                   searchInCountries(query)
+               if(query!=null){
+                   searchInCountries(query)}
 
                     return true
                 }
@@ -110,5 +111,6 @@ class AllCountriesFragment : Fragment(), OnItemClick<Country> {
         val action = AllCountriesFragmentDirections.actionAllCountriesFragmentToLoginFragment2(item)
         findNavController().navigate(action)
     }
+
 
 }

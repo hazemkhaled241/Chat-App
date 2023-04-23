@@ -11,8 +11,9 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/colorPrimary</item>
-        <!-- Customize your theme here. -->
 
+        <item name="otpViewStyle">@style/OtpWidget.OtpView</item>
+        <!-- Customize your theme here. -->
 
     </style>
 

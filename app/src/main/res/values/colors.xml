@@ -11,4 +11,8 @@
     <color name="colorPrimaryLt">#615C5585</color>
     <color name="color_country">#212121</color>
     <color name="color_cursor">#1A84F3</color>
+    <color name="otp_background">#f8f9fb</color>
+    <color name="otp_outline">#bfbcce</color>
+    <color name="transparent">#80000000</color>
+
 </resources>

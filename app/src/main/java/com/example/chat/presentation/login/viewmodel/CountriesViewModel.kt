@@ -1,4 +1,4 @@
-package com.example.chat.presentation
+package com.example.chat.presentation.login.viewmodel
 
 import androidx.lifecycle.*
 import com.example.chat.data.local.Country
@@ -13,7 +13,6 @@ import javax.inject.Inject
 class CountriesViewModel @Inject constructor(
     private val getAllCountriesUseCase: GetAllCountriesUseCase
 ) : ViewModel() {
-    private var countries: List<Country> = arrayListOf()
     private val _countryState = MutableStateFlow<List<Country>?>(null)
     val countryState: StateFlow<List<Country>?> get() = _countryState
     fun fetchAllCountries() {

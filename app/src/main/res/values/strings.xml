@@ -9,6 +9,10 @@
     <string name="verify">Verify</string>
     <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="search">Search</string>
+    <string name="send_code">Send Code</string>
+    <string name="verification">OTP Verification</string>
+    <string name="don_t_receive_the_otp">Don\'t receive the OTP?</string>
+    <string name="otp_image">otpImage</string>
 
 
 </resources>

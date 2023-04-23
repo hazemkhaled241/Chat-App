@@ -20,14 +20,35 @@
         <argument
             android:name="countryItem"
             app:argType="com.example.chat.data.local.Country" />
+        <action
+            android:id="@+id/action_loginFragment_to_verifyFragment"
+            app:destination="@id/verifyFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/from_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@id/nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/allCountriesFragment"
-        android:name="com.example.chat.presentation.AllCountriesFragment"
+        android:name="com.example.chat.presentation.login.AllCountriesFragment"
         android:label="fragment_all_countries"
         tools:layout="@layout/fragment_all_countries" >
         <action
             android:id="@+id/action_allCountriesFragment_to_loginFragment2"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/from_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/verifyFragment"
+        android:name="com.example.chat.presentation.verification.VerifyFragment"
+        android:label="fragment_verify"
+        tools:layout="@layout/fragment_verify" >
+        <action
+            android:id="@+id/action_verifyFragment_to_loginFragment"
             app:destination="@id/loginFragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
