@@ -10,11 +10,12 @@ plugins {
 }
 
 android {
-    namespace 'com.example.chat'
+    namespace 'com.hazem.chat'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.chat"
+
+        applicationId "com.hazem.chat"
         minSdk 24
         targetSdk 33
         versionCode 1
@@ -61,6 +62,9 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4"
     implementation 'com.google.firebase:firebase-database-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'androidx.browser:browser:1.5.0'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+
     //Dagger hilt
     implementation 'com.google.dagger:hilt-android:2.43.2'
     kapt 'com.google.dagger:hilt-android-compiler:2.43.2'
@@ -87,6 +91,12 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
     implementation "androidx.lifecycle:lifecycle-common-java8:2.6.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
-    //PinView
+    //OTPView
     implementation 'com.github.mukeshsolanki.android-otpview-pinview:otpview:3.1.0'
+
+
+    implementation 'org.apache.commons:commons-lang3:3.11'
+    implementation 'com.google.android.gms:play-services-auth:20.5.0'
+    implementation 'com.google.android.gms:play-services-auth-api-phone:18.0.1'
+
 }

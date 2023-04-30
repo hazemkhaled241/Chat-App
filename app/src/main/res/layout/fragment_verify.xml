@@ -1,127 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+ xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".presentation.verification.VerifyFragment">
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_chat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        tools:context=".presentation.verification.VerifyFragment">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_chat"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <View
-                android:id="@+id/view"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/_15sdp"
-                app:layout_constraintBottom_toBottomOf="@id/iv_chat"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/iv_chat"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/ic_otp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:contentDescription="@string/otp_image" />
-
-            <com.google.android.material.card.MaterialCardView
-                style="@style/CustomCardCorners"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:cardElevation="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <View
+                    android:id="@+id/view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_chat"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-                    <TextView
-                        android:id="@+id/tv_verification"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_marginTop="@dimen/_14sdp"
-                        android:fontFamily="@font/font_semi"
-                        android:text="@string/verification"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_20ssp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/iv_chat"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/otp_image"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/ic_otp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/CustomCardCorners"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/view">
 
-                    <com.mukeshsolanki.OtpView
-                        android:id="@+id/otp_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_50sdp"
-                        android:cursorVisible="true"
-                        android:fontFamily="@font/font_rg"
-                        android:gravity="center_horizontal"
-                        android:inputType="number"
-                        android:itemBackground="@color/otp_background"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_18ssp"
-                        app:OtpCursorColor="@color/color_cursor"
-                        app:OtpItemCount="6"
-                        app:OtpItemRadius="@dimen/_8sdp"
-                        app:OtpItemSpacing="@dimen/_10sdp"
-                        app:OtpLineColor="@color/otp_outline"
-                        app:OtpViewType="rectangle"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_verification" />
-
-                    <TextView
-                        android:id="@+id/tv_not_send"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_22sdp"
-                        android:fontFamily="@font/font_rg"
-                        android:gravity="center_horizontal"
-                        android:text="@string/don_t_receive_the_otp"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_15ssp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/otp_view" />
+                        android:layout_height="match_parent">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_verify"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_60sdp"
-                        android:backgroundTint="@color/colorPrimary"
-                        android:fontFamily="@font/font_semi"
-                        android:padding="@dimen/_8sdp"
-                        android:text="@string/verify"
-                        android:textAllCaps="false"
-                        android:textSize="@dimen/_15ssp"
+                        <TextView
+                            android:id="@+id/tv_verification"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_14sdp"
+                            android:fontFamily="@font/font_semi"
+                            android:text="@string/verification"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_20ssp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                        app:cornerRadius="@dimen/_10sdp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_not_send" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </com.google.android.material.card.MaterialCardView>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+                        <com.mukeshsolanki.OtpView
+                            android:autofillHints="smsOTPCode"
+                            android:importantForAutofill="yes"
+                            android:id="@+id/otp_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_50sdp"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/font_rg"
+                            android:gravity="center_horizontal"
+                            android:inputType="number"
+                            android:itemBackground="@color/otp_background"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_18ssp"
+                            app:OtpCursorColor="@color/color_cursor"
+                            app:OtpItemCount="6"
+                            app:OtpItemRadius="@dimen/_8sdp"
+                            app:OtpItemSpacing="@dimen/_10sdp"
+                            app:OtpLineColor="@color/otp_outline"
+                            app:OtpViewType="rectangle"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_verification" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                        <TextView
+                            android:id="@+id/tv_not_send"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_22sdp"
+                            android:fontFamily="@font/font_rg"
+                            android:gravity="center_horizontal"
+                            android:text="@string/don_t_receive_the_otp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_15ssp"
+                            app:layout_constraintEnd_toEndOf="@+id/otp_view"
+                            app:layout_constraintStart_toStartOf="@id/otp_view"
+                            app:layout_constraintTop_toBottomOf="@+id/otp_view" />
+
+                        <TextView
+                            android:id="@+id/tv_resend"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/font_semi"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_14ssp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_not_send" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_verify"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_60sdp"
+                            android:backgroundTint="@color/colorPrimary"
+                            android:fontFamily="@font/font_semi"
+                            android:padding="@dimen/_8sdp"
+                            android:text="@string/verify"
+                            android:textAllCaps="false"
+                            android:textSize="@dimen/_15ssp"
+
+                            app:cornerRadius="@dimen/_10sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_resend" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

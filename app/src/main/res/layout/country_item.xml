@@ -7,7 +7,7 @@
 
         <variable
             name="country"
-            type="com.example.chat.data.local.Country" />
+            type="com.hazem.chat.data.local.Country" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
