@@ -94,6 +94,8 @@ dependencies {
     //OTPView
     implementation 'com.github.mukeshsolanki.android-otpview-pinview:otpview:3.1.0'
 
+    // coil
+    implementation "io.coil-kt:coil:2.2.2"
 
     implementation 'org.apache.commons:commons-lang3:3.11'
     implementation 'com.google.android.gms:play-services-auth:20.5.0'

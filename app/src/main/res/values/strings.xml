@@ -13,6 +13,9 @@
     <string name="verification">OTP Verification</string>
     <string name="don_t_receive_the_otp">Don\'t receive the OTP?</string>
     <string name="otp_image">otpImage</string>
+    <string name="message">Message</string>
+    <string name="user_image">User_Image</string>
+    <string name="send">send</string>
 
 
 </resources>

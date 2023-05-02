@@ -15,4 +15,11 @@
     <color name="otp_outline">#bfbcce</color>
     <color name="transparent">#80000000</color>
 
+
+    <color name="MessageColor">#005c4b</color>
+    <color name="SendColor">#25d366</color>
+    <color name="EditTextSendColor">#1f2c34</color>
+    <color name="message_color">#8695a0</color>
+    <color name="color_time">#ece5dd</color>
+
 </resources>
