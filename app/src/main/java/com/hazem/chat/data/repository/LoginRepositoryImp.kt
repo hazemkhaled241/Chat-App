@@ -9,6 +9,11 @@ import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
+import com.google.firebase.database.FirebaseDatabase
+import com.hazem.chat.domain.model.User
+import com.hazem.chat.utils.Constants.Companion.USERNAME_KEY
+import com.hazem.chat.utils.Constants.Companion.USER_ID_KEY
+import com.hazem.chat.utils.SharedPrefs
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -19,6 +24,8 @@ import javax.inject.Inject
 
 class LoginRepositoryImp @Inject constructor(
     private val auth: FirebaseAuth,
+    private val database: FirebaseDatabase,
+    private val sharedPrefs: SharedPrefs,
 ) : LoginRepository {
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
     private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
@@ -37,7 +44,7 @@ class LoginRepositoryImp @Inject constructor(
 
                     if (!otpCode.isNullOrEmpty()) {
                         Log.d("ErrorTest", otpCode)
-                         trySend( Resource.Success("completed|$otpCode"))
+                        trySend(Resource.Success("completed|$otpCode"))
                     }
 
                 }
@@ -105,22 +112,51 @@ class LoginRepositoryImp @Inject constructor(
 
     }
 
-    override suspend fun verifyOtpCode(otpCode: String,verificationID: String):Resource<String,String> {
+    override suspend fun verifyOtpCode(
+        otpCode: String,
+        verificationID: String,
+        user: User
+    ): Resource<String, String> {
         return signInWithPhoneAuthCredential(
             PhoneAuthProvider.getCredential(
                 verificationID,
                 otpCode
-            )
+            ), user
         )
     }
 
-    override suspend fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential): Resource<String, String> {
+    override suspend fun signInWithPhoneAuthCredential(
+        credential: PhoneAuthCredential,
+        user: User
+    ): Resource<String, String> {
         return try {
             auth.signInWithCredential(credential).await()
-            Resource.Success("Logged in successfully")
+            login(user)
         } catch (e: Exception) {
             Resource.Error(e.message.toString())
         }
+    }
+
+    override suspend fun login(user: User): Resource<String, String> {
+       return try {
+           val dataBaseReference= database.getReference("users")
+           dataBaseReference.child(auth.uid.toString()).
+           setValue(User(auth.uid.toString(),user.phoneNumber,user.name)).await()
+           sharedPrefs.put(USER_ID_KEY, auth.uid.toString())
+           sharedPrefs.put(USERNAME_KEY, user.name)
+           Resource.Success("Logged in successfully")
+       }
+       catch (e: Exception) {
+           Resource.Error(e.message.toString())
+       }
+    }
+
+    override fun <T> saveInSharedPreference(key: String, data: T) {
+        sharedPrefs.put(key, data)
+    }
+
+    override fun <T> getFromSharedPreference(key: String, clazz: Class<T>): T {
+        return sharedPrefs.get(key, clazz)
     }
 
     override suspend fun resendOtpCode(phoneNumber: String, activity: Activity) {
@@ -134,7 +170,6 @@ class LoginRepositoryImp @Inject constructor(
     }
 
     override suspend fun isUserVerified(): Boolean = auth.currentUser != null
-
 
 
     fun removeSurroundingString(str: String?): String {

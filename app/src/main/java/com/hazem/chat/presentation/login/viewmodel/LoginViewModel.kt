@@ -3,7 +3,8 @@ package com.hazem.chat.presentation.login.viewmodel
 import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hazem.chat.domain.usecase.IsValidNumberUseCase
+import com.hazem.chat.data.local.Country
+import com.hazem.chat.domain.usecase.remote.auth.IsValidNumberUseCase
 import com.hazem.chat.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -23,12 +24,12 @@ class LoginViewModel @Inject constructor(
     val loginState = _loginState.asStateFlow()
     //private val _loginState = MutableLiveData<LoginState>()
     //val loginState: LiveData<LoginState> get() = _loginState
-    fun isValidNumber(code: String, phoneNumber: String, activity: Activity) {
+    fun isValidNumber(country: Country, phoneNumber: String, activity: Activity) {
         setLoading(true)
 
 
         viewModelScope.launch(Dispatchers.IO) {
-                isValidNumberUseCase.invoke(code, phoneNumber, activity).collect {
+                isValidNumberUseCase.invoke(country, phoneNumber, activity).collect {
                     when (it) {
                         is Resource.Error -> {
                             withContext(Dispatchers.Main) {

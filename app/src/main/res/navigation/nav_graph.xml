@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -57,5 +57,36 @@
         <argument
             android:name="verificationID"
             app:argType="string" />
+        <action
+            android:id="@+id/action_verifyFragment_to_chatsHomeFragment"
+            app:destination="@id/chatsHomeFragment" />
+        <action
+            android:id="@+id/action_verifyFragment_to_singleChatFragment"
+            app:destination="@id/singleChatFragment" />
+        <argument
+            android:name="user"
+            app:argType="com.hazem.chat.domain.model.User" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatsHomeFragment"
+        android:name="com.hazem.chat.presentation.chat.ChatsHomeFragment"
+        android:label="fragment_chats_home"
+        tools:layout="@layout/fragment_chats_home" />
+    <fragment
+        android:id="@+id/singleChatFragment"
+        android:name="com.hazem.chat.presentation.chat.SingleChatFragment"
+        android:label="fragment_single_chat"
+        tools:layout="@layout/fragment_single_chat" />
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.hazem.chat.presentation.splash.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_singleChatFragment"
+            app:destination="@id/singleChatFragment" />
     </fragment>
 </navigation>

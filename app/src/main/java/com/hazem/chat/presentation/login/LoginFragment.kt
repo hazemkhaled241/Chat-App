@@ -22,6 +22,7 @@ import com.hazem.chat.presentation.login.viewmodel.LoginViewModel
 import com.hazem.chat.presentation.login.viewmodel.SharedViewModel
 import com.hazem.chat.utils.createAlertDialog
 import com.google.android.material.snackbar.Snackbar
+import com.hazem.chat.domain.model.User
 import com.hazem.chat.utils.countries
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -68,7 +69,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun verifyNumber(phoneNumber: String) {
-        loginViewModel.isValidNumber(currCountry.code, phoneNumber, requireActivity())
+        loginViewModel.isValidNumber(currCountry, phoneNumber, requireActivity(),)
     }
 
     private fun initializeSharedViewModel() {
@@ -94,8 +95,11 @@ class LoginFragment : Fragment() {
                             Log.d("hhh1", "onCreate: $currentFragmentTag")
                         }*/
                        // if(findNavController().isValidDestination(R.id.verifyFragment)){
-                         val action =
-                            LoginFragmentDirections.actionLoginFragmentToVerifyFragment(it.message)
+
+                        val action =
+                            LoginFragmentDirections.actionLoginFragmentToVerifyFragment(it.message,
+                                User("",binding.edtMobile.text.toString(),"maged")
+                            )
                         findNavController().navigate(action)
                         //}
 

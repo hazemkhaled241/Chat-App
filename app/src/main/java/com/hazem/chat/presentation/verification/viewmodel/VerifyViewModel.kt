@@ -5,7 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hazem.chat.domain.usecase.VerificationUseCase
+import com.hazem.chat.domain.model.User
+import com.hazem.chat.domain.usecase.remote.auth.VerificationUseCase
+import com.hazem.chat.domain.usecase.remote.shared_preference.SaveInSharedPreferenceUseCase
 import com.hazem.chat.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class VerifyViewModel @Inject constructor(
-    private val verificationUseCase: VerificationUseCase
+    private val verificationUseCase: VerificationUseCase,
+    private val saveInSharedPreferenceUseCase: SaveInSharedPreferenceUseCase
 ) : ViewModel() {
     private var timer: CountDownTimer? = null
     private var _loginState = MutableStateFlow<VerificationState>(VerificationState.Init)
@@ -28,11 +31,11 @@ class VerifyViewModel @Inject constructor(
     private val _countDownTime = MutableLiveData<String?>()
     val countDownTime: LiveData<String?> get() = _countDownTime
 
-    fun verifyOtp(otpCode: String, verificationID: String) {
+    fun verifyOtp(otpCode: String, verificationID: String, user: User) {
         setLoading(true)
 
         viewModelScope.launch(Dispatchers.IO) {
-            verificationUseCase.invoke(otpCode, verificationID).let {
+            verificationUseCase.invoke(otpCode, verificationID,user).let {
                 when (it) {
                     is Resource.Error -> {
                         setLoading(false)
@@ -77,6 +80,9 @@ class VerifyViewModel @Inject constructor(
         }
         timer?.start()
 
+    }
+    fun <T> saveInSP(key: String, data: T) {
+        saveInSharedPreferenceUseCase(key, data)
     }
 
 

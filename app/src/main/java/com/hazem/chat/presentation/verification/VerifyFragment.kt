@@ -13,10 +13,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.FirebaseDatabase
 import com.hazem.chat.R
 import com.hazem.chat.databinding.FragmentVerifyBinding
 import com.hazem.chat.presentation.verification.viewmodel.VerificationState
 import com.hazem.chat.presentation.verification.viewmodel.VerifyViewModel
+import com.hazem.chat.utils.Constants.Companion.IS_LOGGED_IN_KEY
 import com.hazem.chat.utils.createAlertDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -28,6 +30,7 @@ class VerifyFragment : Fragment() {
     private lateinit var dialog: Dialog
     private val args: VerifyFragmentArgs by navArgs()
     private val verifyViewModel: VerifyViewModel by viewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,7 +53,7 @@ class VerifyFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         dialog = requireContext().createAlertDialog(requireActivity())
         binding.otpView.setOtpCompletionListener {
-            verifyViewModel.verifyOtp(it, args.verificationID)
+            verifyViewModel.verifyOtp(it, args.verificationID, args.user)
         }
         verifyViewModel.startCountDown()
         verifyViewModel.countDownTime.observe(viewLifecycleOwner) {
@@ -59,7 +62,7 @@ class VerifyFragment : Fragment() {
         }
         observe()
         binding.btnVerify.setOnClickListener {
-            verifyViewModel.verifyOtp(binding.otpView.text.toString(), args.verificationID)
+            verifyViewModel.verifyOtp(binding.otpView.text.toString(), args.verificationID,args.user)
         }
     }
 
@@ -69,11 +72,16 @@ class VerifyFragment : Fragment() {
                 when (it) {
                     VerificationState.Init -> Unit
                     is VerificationState.IsLoading -> handleLoadingState(it.isLoading)
-                    is VerificationState.LoginSuccessfully -> Toast.makeText(
-                        requireContext(),
-                        it.message,
-                        Toast.LENGTH_LONG
-                    ).show()
+                    is VerificationState.LoginSuccessfully -> {
+                        Toast.makeText(
+                            requireContext(),
+                            it.message,
+                            Toast.LENGTH_LONG
+                        ).show()
+
+                        verifyViewModel.saveInSP(IS_LOGGED_IN_KEY, true)
+
+                    }
                     is VerificationState.ShowError -> {
                         Snackbar.make(
                             requireActivity().findViewById(android.R.id.content),
