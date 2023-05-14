@@ -5,11 +5,12 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.view.*
-import androidx.navigation.NavController
+import com.google.android.material.snackbar.Snackbar
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 
 import com.hazem.chat.R
 import com.hazem.chat.data.local.Country
+import com.hazem.chat.domain.model.Message
 
 
 @SuppressLint("InflateParams")
@@ -312,6 +313,18 @@ fun isValidNumber(phoneNumber:String,  code: String): Resource<String, String> {
     }
     return  Resource.Error("Something wrong happened !")
 }
-fun NavController.isValidDestination(destination: Int): Boolean {
-    return destination == this.currentDestination!!.id
+
+
+fun Message.isValidMessage(): Boolean {
+    return if (this.messageText != null && this.messageText.isEmpty()) {
+        false
+    } else !(this.imageUrl != null && this.imageUrl.toString().isEmpty())
+}
+
+fun View.showErrorSnackBar(message: String) {
+    Snackbar.make(
+        this.findViewById(android.R.id.content),
+        message,
+        2000
+    ).show()
 }
