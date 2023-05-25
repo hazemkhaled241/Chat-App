@@ -60,9 +60,6 @@
         <action
             android:id="@+id/action_verifyFragment_to_chatsHomeFragment"
             app:destination="@id/chatsHomeFragment" />
-        <action
-            android:id="@+id/action_verifyFragment_to_singleChatFragment"
-            app:destination="@id/singleChatFragment" />
         <argument
             android:name="user"
             app:argType="com.hazem.chat.domain.model.User" />
@@ -71,12 +68,20 @@
         android:id="@+id/chatsHomeFragment"
         android:name="com.hazem.chat.presentation.chat.ChatsHomeFragment"
         android:label="fragment_chats_home"
-        tools:layout="@layout/fragment_chats_home" />
+        tools:layout="@layout/fragment_chats_home" >
+        <action
+            android:id="@+id/action_chatsHomeFragment_to_singleChatFragment"
+            app:destination="@id/singleChatFragment" />
+    </fragment>
     <fragment
         android:id="@+id/singleChatFragment"
         android:name="com.hazem.chat.presentation.chat.SingleChatFragment"
         android:label="fragment_single_chat"
-        tools:layout="@layout/fragment_single_chat" />
+        tools:layout="@layout/fragment_single_chat" >
+        <argument
+            android:name="user"
+            app:argType="com.hazem.chat.domain.model.User" />
+    </fragment>
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.hazem.chat.presentation.splash.SplashFragment"
@@ -88,5 +93,8 @@
         <action
             android:id="@+id/action_splashFragment_to_singleChatFragment"
             app:destination="@id/singleChatFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_chatsHomeFragment"
+            app:destination="@id/chatsHomeFragment" />
     </fragment>
 </navigation>

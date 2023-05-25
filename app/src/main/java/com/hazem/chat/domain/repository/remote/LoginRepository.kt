@@ -1,4 +1,4 @@
-package com.hazem.chat.domain.repository.local
+package com.hazem.chat.domain.repository.remote
 
 import android.app.Activity
 import com.google.firebase.auth.PhoneAuthCredential

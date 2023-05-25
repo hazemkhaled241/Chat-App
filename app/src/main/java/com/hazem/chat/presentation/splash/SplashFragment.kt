@@ -37,7 +37,7 @@ class SplashFragment : Fragment() {
     }
     private fun handleNextNavigation() {
         if (splashViewModel.getFromSP(IS_LOGGED_IN_KEY, Boolean::class.java)) {
-            findNavController().navigate(R.id.action_splashFragment_to_singleChatFragment)
+            findNavController().navigate(R.id.action_splashFragment_to_chatsHomeFragment)
         } else { // not first time
                 findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
 

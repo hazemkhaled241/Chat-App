@@ -3,15 +3,17 @@ package com.hazem.chat.data.repository
 import android.app.Activity
 import android.util.Log
 
-import com.hazem.chat.domain.repository.local.LoginRepository
+import com.hazem.chat.domain.repository.remote.LoginRepository
 import com.hazem.chat.utils.Resource
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.hazem.chat.data.mapper.toUserDto
 import com.hazem.chat.domain.model.User
 import com.hazem.chat.utils.Constants.Companion.USERNAME_KEY
+import com.hazem.chat.utils.Constants.Companion.USER_FIRESTORE_COLLECTION
 import com.hazem.chat.utils.Constants.Companion.USER_ID_KEY
 import com.hazem.chat.utils.SharedPrefs
 import kotlinx.coroutines.channels.awaitClose
@@ -24,7 +26,7 @@ import javax.inject.Inject
 
 class LoginRepositoryImp @Inject constructor(
     private val auth: FirebaseAuth,
-    private val database: FirebaseDatabase,
+    private val fireStore: FirebaseFirestore,
     private val sharedPrefs: SharedPrefs,
 ) : LoginRepository {
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
@@ -130,7 +132,10 @@ class LoginRepositoryImp @Inject constructor(
         user: User
     ): Resource<String, String> {
         return try {
-            auth.signInWithCredential(credential).await()
+            val result = auth.signInWithCredential(credential).await()
+            result.user?.let {
+                user.userId = it.uid
+            }
             login(user)
         } catch (e: Exception) {
             Resource.Error(e.message.toString())
@@ -138,17 +143,16 @@ class LoginRepositoryImp @Inject constructor(
     }
 
     override suspend fun login(user: User): Resource<String, String> {
-       return try {
-           val dataBaseReference= database.getReference("users")
-           dataBaseReference.child(auth.uid.toString()).
-           setValue(User(auth.uid.toString(),user.phoneNumber,user.name)).await()
-           sharedPrefs.put(USER_ID_KEY, auth.uid.toString())
-           sharedPrefs.put(USERNAME_KEY, user.name)
-           Resource.Success("Logged in successfully")
-       }
-       catch (e: Exception) {
-           Resource.Error(e.message.toString())
-       }
+        return try {
+            fireStore.collection(USER_FIRESTORE_COLLECTION).document(user.userId)
+                .set(user.toUserDto())
+                .await()
+            sharedPrefs.put(USER_ID_KEY, auth.uid.toString())
+            sharedPrefs.put(USERNAME_KEY, user.name)
+            Resource.Success("Logged in successfully")
+        } catch (e: Exception) {
+            Resource.Error(e.message.toString())
+        }
     }
 
     override fun <T> saveInSharedPreference(key: String, data: T) {

@@ -13,7 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.database.FirebaseDatabase
 import com.hazem.chat.R
 import com.hazem.chat.databinding.FragmentVerifyBinding
 import com.hazem.chat.presentation.verification.viewmodel.VerificationState
@@ -78,7 +77,7 @@ class VerifyFragment : Fragment() {
                             it.message,
                             Toast.LENGTH_LONG
                         ).show()
-
+                        findNavController().navigate(R.id.action_verifyFragment_to_chatsHomeFragment)
                         verifyViewModel.saveInSP(IS_LOGGED_IN_KEY, true)
 
                     }

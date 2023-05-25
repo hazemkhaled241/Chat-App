@@ -323,7 +323,7 @@ fun Message.isValidMessage(): Boolean {
 
 fun View.showErrorSnackBar(message: String) {
     Snackbar.make(
-        this.findViewById(android.R.id.content),
+        this,
         message,
         2000
     ).show()

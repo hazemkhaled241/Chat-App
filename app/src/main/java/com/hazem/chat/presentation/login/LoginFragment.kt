@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.telephony.TelephonyManager
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -60,7 +61,7 @@ class LoginFragment : Fragment() {
             model.message = binding.edtMobile.text.toString()
             findNavController().navigate(R.id.action_loginFragment_to_allCountriesFragment)
         }
-
+        //insertCountries()
         binding.btnSendCode.setOnClickListener {
             verifyNumber(binding.edtMobile.text.toString())
 
@@ -88,6 +89,7 @@ class LoginFragment : Fragment() {
                             it.message,
                             2000
                         ).show()
+                        Log.d("hhh", it.message)
                     }
                     is LoginState.ValidNumber -> {
                        /* findNavController().addOnDestinationChangedListener{ _, destination, _ ->
@@ -98,7 +100,7 @@ class LoginFragment : Fragment() {
 
                         val action =
                             LoginFragmentDirections.actionLoginFragmentToVerifyFragment(it.message,
-                                User("",binding.edtMobile.text.toString(),"maged")
+                                User("",binding.edtMobile.text.toString(),"hazem")
                             )
                         findNavController().navigate(action)
                         //}

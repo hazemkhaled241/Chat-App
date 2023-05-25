@@ -2,6 +2,7 @@ package com.hazem.chat.utils
 
 class Constants {
     companion object {
+
         //splash
         const val HANDLER_DELAY = 2000L
 
@@ -21,5 +22,11 @@ class Constants {
         const val MY_CHATS_FIIRESTORE_COLLECTION: String = "my_chats"
         const val MESSAGES_FIIRESTORE_COLLECTION: String = "Messages"
         const val CHATS_FIIRESTORE_COLLECTION: String = "Chats"
+        const val TOKENS_FIIRESTORE_COLLECTION: String = "Tokens"
+        const val NOTIFICATION_CHANNEL_ID: String = "channel_id"
+        //notification
+        const val FCM_API_KEY: String =
+            "AAAA92L23Rs:APA91bEe5qTrNsAsrLti3mPkXCcyF3bemZwh4vSjAypuEZhSbPihuYI6c3gCAtuaRSyTfSiBrPeeTeTuOEoImvV3YCfMB2c1cIAEkFzmh4kkxHI49gjwFhw5B2uucpPFXEj03iRqQy3v"
+        const val FCM_BASE_URL: String = "https://fcm.googleapis.com/"
     }
 }

@@ -16,6 +16,9 @@
     <string name="message">Message</string>
     <string name="user_image">User_Image</string>
     <string name="send">send</string>
+    <string name="chat">Chat</string>
+    <string name="last_message">last message</string>
+    <string name="name">Name</string>
 
 
 </resources>

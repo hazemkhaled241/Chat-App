@@ -1,6 +1,6 @@
 package com.hazem.chat.domain.usecase.remote.shared_preference
 
-import com.hazem.chat.domain.repository.local.LoginRepository
+import com.hazem.chat.domain.repository.remote.LoginRepository
 import javax.inject.Inject
 
 class GetFromSharedPreferenceUseCase @Inject constructor(

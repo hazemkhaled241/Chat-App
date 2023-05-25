@@ -14,6 +14,7 @@
     <color name="otp_background">#f8f9fb</color>
     <color name="otp_outline">#bfbcce</color>
     <color name="transparent">#80000000</color>
+    <color name="gray">#808080</color>
 
 
     <color name="MessageColor">#005c4b</color>

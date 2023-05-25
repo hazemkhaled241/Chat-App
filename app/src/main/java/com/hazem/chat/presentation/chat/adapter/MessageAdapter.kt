@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.hazem.chat.R
 import com.hazem.chat.domain.model.Message
+import java.text.SimpleDateFormat
+
 class MessageAdapter:RecyclerView.Adapter<MessageAdapter.MyViewHolder>() {
     private var messages: List<Message> = arrayListOf()
     private var currentUserId: String = ""
@@ -20,15 +22,20 @@ class MessageAdapter:RecyclerView.Adapter<MessageAdapter.MyViewHolder>() {
 inner class MyViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
     private val messageTextView: TextView = itemView.findViewById(R.id.tv_message)
     private val imageView: ImageView = itemView.findViewById(R.id.iv_photo)
+    private val dateTextView: TextView = itemView.findViewById(R.id.tv_time)
+    private val formatter = SimpleDateFormat("HH:mm")
+
     fun bind(message: Message){
         if (message.imageUrl!=null) {
             messageTextView.visibility = View.GONE
             imageView.visibility = View.VISIBLE
             imageView.load(message.imageUrl)
+            dateTextView.text=formatter.format(message.date)
         } else {
             messageTextView.visibility = View.VISIBLE
             imageView.visibility = View.GONE
             messageTextView.text = message.messageText
+            dateTextView.text=formatter.format(message.date)
         }
     }
     }
