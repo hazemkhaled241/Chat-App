@@ -10,8 +10,10 @@ import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
 import com.hazem.chat.data.mapper.toUserDto
 import com.hazem.chat.domain.model.User
+import com.hazem.chat.utils.Constants
 import com.hazem.chat.utils.Constants.Companion.USERNAME_KEY
 import com.hazem.chat.utils.Constants.Companion.USER_FIRESTORE_COLLECTION
 import com.hazem.chat.utils.Constants.Companion.USER_ID_KEY
@@ -28,6 +30,7 @@ class LoginRepositoryImp @Inject constructor(
     private val auth: FirebaseAuth,
     private val fireStore: FirebaseFirestore,
     private val sharedPrefs: SharedPrefs,
+    private val fcm: FirebaseMessaging
 ) : LoginRepository {
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
     private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
@@ -147,6 +150,8 @@ class LoginRepositoryImp @Inject constructor(
             fireStore.collection(USER_FIRESTORE_COLLECTION).document(user.userId)
                 .set(user.toUserDto())
                 .await()
+            val token = fcm.token.await()
+            updateToken(auth.currentUser!!.uid, token)
             sharedPrefs.put(USER_ID_KEY, auth.uid.toString())
             sharedPrefs.put(USERNAME_KEY, user.name)
             Resource.Success("Logged in successfully")
@@ -154,7 +159,10 @@ class LoginRepositoryImp @Inject constructor(
             Resource.Error(e.message.toString())
         }
     }
-
+    private fun updateToken(userId: String, token: String) {
+        fireStore.collection(Constants.TOKENS_FIIRESTORE_COLLECTION).document(userId)
+            .set(hashMapOf("token" to token))
+    }
     override fun <T> saveInSharedPreference(key: String, data: T) {
         sharedPrefs.put(key, data)
     }

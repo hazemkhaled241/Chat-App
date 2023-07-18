@@ -61,7 +61,7 @@ class LoginFragment : Fragment() {
             model.message = binding.edtMobile.text.toString()
             findNavController().navigate(R.id.action_loginFragment_to_allCountriesFragment)
         }
-        //insertCountries()
+       // insertCountries()
         binding.btnSendCode.setOnClickListener {
             verifyNumber(binding.edtMobile.text.toString())
 
@@ -100,7 +100,7 @@ class LoginFragment : Fragment() {
 
                         val action =
                             LoginFragmentDirections.actionLoginFragmentToVerifyFragment(it.message,
-                                User("",binding.edtMobile.text.toString(),"hazem")
+                                User("",binding.edtMobile.text.toString(),"maged")
                             )
                         findNavController().navigate(action)
                         //}

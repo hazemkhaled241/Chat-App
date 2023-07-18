@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "446186813754",
+    "project_id": "chat-b629c",
+    "storage_bucket": "chat-b629c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:446186813754:android:29774dfef66d6c72d6f803",
+        "android_client_info": {
+          "package_name": "com.hazem.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "446186813754-3s6de6oiappk3afee3k9surg5lcg085l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hazem.chat",
+            "certificate_hash": "ca6dc68489bdcaaded2a7b89982ac4b96ab492c7"
+          }
+        },
+        {
+          "client_id": "446186813754-pmmifoij2sjidb01csq21sl3sinr7r76.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1vZEH9VzoBy-o6qPlwNBiSqeL2pQLBis"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "446186813754-pmmifoij2sjidb01csq21sl3sinr7r76.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

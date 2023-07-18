@@ -24,9 +24,11 @@ class Constants {
         const val CHATS_FIIRESTORE_COLLECTION: String = "Chats"
         const val TOKENS_FIIRESTORE_COLLECTION: String = "Tokens"
         const val NOTIFICATION_CHANNEL_ID: String = "channel_id"
+        const val NOT_IN_MYCHATS_OR_CHATROOM = "inChatRoomOrMyChats"
+
         //notification
         const val FCM_API_KEY: String =
-            "AAAA92L23Rs:APA91bEe5qTrNsAsrLti3mPkXCcyF3bemZwh4vSjAypuEZhSbPihuYI6c3gCAtuaRSyTfSiBrPeeTeTuOEoImvV3YCfMB2c1cIAEkFzmh4kkxHI49gjwFhw5B2uucpPFXEj03iRqQy3v"
+            "AAAAZ-LOeTo:APA91bHhY1koiH-09JZv7HWa9fXVn_aYzEBnKS6VVtNP6beOlJ8zCxujrhCXBNGjJUg-7tXw_pxd9JbwSF8VrlyKmf6LyVc9QH4i4vcayNi6INe9totOTsMD-on8pzx3tLbxh2MYYWqS"
         const val FCM_BASE_URL: String = "https://fcm.googleapis.com/"
     }
 }

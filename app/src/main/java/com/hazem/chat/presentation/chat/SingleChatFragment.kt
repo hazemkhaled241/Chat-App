@@ -3,7 +3,6 @@ package com.hazem.chat.presentation.chat
 import android.Manifest
 import android.app.Activity
 import android.app.Dialog
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
@@ -13,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -27,6 +25,7 @@ import com.hazem.chat.domain.model.Message
 import com.hazem.chat.presentation.chat.adapter.MessageAdapter
 import com.hazem.chat.presentation.chat.viewmodel.SingleChatState
 import com.hazem.chat.presentation.chat.viewmodel.SingleChatViewModel
+import com.hazem.chat.utils.Constants
 import com.hazem.chat.utils.FileUtil
 import com.hazem.chat.utils.createAlertDialog
 import com.hazem.chat.utils.showErrorSnackBar
@@ -88,7 +87,7 @@ class SingleChatFragment : Fragment() {
 
         observe()
         handleKeyboard()
-
+        singleChatViewModel.setInMyChats(Constants.NOT_IN_MYCHATS_OR_CHATROOM, false)
         binding.rvMessages.adapter = messageAdapter
     }
 
@@ -248,6 +247,7 @@ class SingleChatFragment : Fragment() {
 
     override fun onStop() {
         singleChatViewModel.scroll=false
+        singleChatViewModel.setInMyChats(Constants.NOT_IN_MYCHATS_OR_CHATROOM, true)
         binding.clChatMessages.viewTreeObserver.removeOnGlobalLayoutListener(listener) // to prevent null pointer exception and memory leaks
         super.onStop()
     }

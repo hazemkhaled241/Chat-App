@@ -3,6 +3,7 @@ package com.hazem.chat.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.StorageReference
 import com.hazem.chat.data.local.dao.CountryDao
 import com.hazem.chat.data.remote.FCMApiService
@@ -38,11 +39,13 @@ object RepositoryModule {
         fireStore: FirebaseFirestore,
         auth: FirebaseAuth,
         sharedPrefs: SharedPrefs,
+        fcm: FirebaseMessaging
     ): LoginRepository {
         return LoginRepositoryImp(
             auth,
             fireStore,
-            sharedPrefs
+            sharedPrefs,
+            fcm
         )
     }
 
@@ -62,7 +65,7 @@ object RepositoryModule {
     fun provideChatRepository(
         firestore: FirebaseFirestore,
         storageReference: StorageReference,
-        fcmApiService: FCMApiService
+        fcmApiService: FCMApiService,
     ): ChatRepository {
         return ChatRepositoryImp(
             firestore,

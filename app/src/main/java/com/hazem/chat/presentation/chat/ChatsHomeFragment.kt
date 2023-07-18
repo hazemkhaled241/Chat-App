@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ import com.hazem.chat.presentation.chat.adapter.ContactsAdapter
 import com.hazem.chat.presentation.chat.viewmodel.ChatHomeState
 import com.hazem.chat.presentation.chat.viewmodel.ChatHomeViewModel
 import com.hazem.chat.presentation.login.adapter.OnItemClick
+import com.hazem.chat.utils.Constants.Companion.NOT_IN_MYCHATS_OR_CHATROOM
 import com.hazem.chat.utils.createAlertDialog
 import com.hazem.chat.utils.showErrorSnackBar
 import dagger.hilt.android.AndroidEntryPoint
@@ -62,9 +64,15 @@ class ChatsHomeFragment : Fragment(), OnItemClick<User> {
                 }
                 fetchContacts()
             }
+        chatHomeViewModel.setInMyChats(NOT_IN_MYCHATS_OR_CHATROOM, false)
+
         permissionLauncher.launch(android.Manifest.permission.READ_CONTACTS)
     }
 
+    override fun onStart() {
+        chatHomeViewModel.setInMyChats(NOT_IN_MYCHATS_OR_CHATROOM, true)
+        super.onStart()
+    }
     @SuppressLint("Range", "Recycle")
     private fun fetchContacts() {
         val contacts = context?.contentResolver?.query(
@@ -85,7 +93,7 @@ class ChatsHomeFragment : Fragment(), OnItemClick<User> {
 
             }
            chatHomeViewModel.fetchRegisteredContacts(contactsList)
-            //Log.d("hhhh", contactsList.toSet().toString())
+            Log.d("hhhh", contactsList.toSet().toString())
         }
     }
     private fun observe() {
@@ -96,6 +104,7 @@ class ChatsHomeFragment : Fragment(), OnItemClick<User> {
                     is ChatHomeState.IsLoading -> handleLoadingState(it.isLoading)
                     is ChatHomeState.FetchAllRegisteredContactsSuccessfullySuccessfully -> {
                         contactsAdapter.updateList(it.messages)
+                        Log.d("hhhh", it.toString())
                     }
                     is ChatHomeState.ShowError -> handleErrorState(it.message)
                 }

@@ -19,6 +19,8 @@
     <string name="chat">Chat</string>
     <string name="last_message">last message</string>
     <string name="name">Name</string>
+    <string name="message_notification_title">New Message</string>
+
 
 
 </resources>

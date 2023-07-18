@@ -1,6 +1,7 @@
 package com.hazem.chat.data.repository
 
 import android.net.Uri
+import android.util.Log
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -32,7 +33,7 @@ import javax.inject.Inject
 class ChatRepositoryImp @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val storageReference: StorageReference,
-    private val fcmApiService: FCMApiService
+    private val fcmApiService: FCMApiService,
 ):ChatRepository {
     override suspend fun sendMessage(message: Message): Resource<Message, String> {
         return withTimeout(Constants.TIMEOUT_UPLOAD) {
@@ -58,7 +59,7 @@ override suspend fun getRegisteredContactsSuccessfully(contacts:ArrayList<Contac
             }
             Resource.Success(
                 usersDto.filter {  p1 ->
-                    contacts.any { p2 -> p1.phoneNumber == p2.number } }
+                    contacts.any { p2 -> p1.phoneNumber.replace("\\s".toRegex(), "") == p2.number.replace("\\s".toRegex(), "") } }
                     .map { it.toUser() }
                     .toCollection(ArrayList())
             )
@@ -203,6 +204,7 @@ override suspend fun getRegisteredContactsSuccessfully(contacts:ArrayList<Contac
                 fcmMessageDto = fcmMessageDto,
                 token = token
             )
+            Log.d("kkkk", notificationDto.toString())
             fcmApiService.sendNotification(notificationDto = notificationDto)
         }
     }

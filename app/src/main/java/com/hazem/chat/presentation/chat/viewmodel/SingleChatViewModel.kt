@@ -8,6 +8,7 @@ import com.hazem.chat.domain.usecase.remote.chat.FetchMessagesBetweenTwoUsersUse
 import com.hazem.chat.domain.usecase.remote.chat.GetFirebaseCurrentUserUseCase
 import com.hazem.chat.domain.usecase.remote.chat.SendMessageUseCase
 import com.hazem.chat.domain.usecase.remote.shared_preference.GetFromSharedPreferenceUseCase
+import com.hazem.chat.domain.usecase.remote.shared_preference.SaveInSharedPreferenceUseCase
 import com.hazem.chat.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +23,8 @@ class SingleChatViewModel @Inject constructor(
     private val fetchMessagesBetweenTwoUsersUseCase: FetchMessagesBetweenTwoUsersUseCase,
     private val sendMessageUseCase: SendMessageUseCase,
     private val getFirebaseCurrentUserUseCase: GetFirebaseCurrentUserUseCase,
+    private val saveInSharedPreferenceUseCase: SaveInSharedPreferenceUseCase
+
 ) :ViewModel() {
     private var _chatRoomState = MutableStateFlow<SingleChatState>(SingleChatState.Init)
     val chatRoomState = _chatRoomState.asStateFlow()
@@ -90,5 +93,9 @@ class SingleChatViewModel @Inject constructor(
     }
     fun <T> readFromSP(key: String, clazz: Class<T>): T {
         return getFromSharedPreferenceUseCase(key = key, clazz = clazz)
+    }
+
+    fun setInMyChats(key: String, value: Boolean) {
+        saveInSharedPreferenceUseCase(key, value)
     }
 }
