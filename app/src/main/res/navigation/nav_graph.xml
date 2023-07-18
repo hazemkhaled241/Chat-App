@@ -97,4 +97,9 @@
             android:id="@+id/action_splashFragment_to_chatsHomeFragment"
             app:destination="@id/chatsHomeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.hazem.chat.presentation.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>
