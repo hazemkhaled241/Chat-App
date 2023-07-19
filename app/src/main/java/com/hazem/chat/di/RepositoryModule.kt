@@ -53,10 +53,12 @@ object RepositoryModule {
     @Singleton
     fun provideUserRepository(
         auth: FirebaseAuth,
+        fireStore: FirebaseFirestore,
 
         ): UserRepository {
         return UserRepositoryImp(
-            auth
+            auth,
+            fireStore
         )
     }
 
