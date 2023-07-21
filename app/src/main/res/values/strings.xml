@@ -22,6 +22,9 @@
     <string name="message_notification_title">New Message</string>
     <string name="chats">Chats</string>
     <string name="profile">Profile</string>
+    <string name="photo">photo</string>
+    <string name="update">Update</string>
+    <string name="logout">Logout</string>
 
 
 </resources>
