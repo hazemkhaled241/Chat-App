@@ -25,6 +25,11 @@
     <string name="photo">photo</string>
     <string name="update">Update</string>
     <string name="logout">Logout</string>
+    <string name="userName">UserName</string>
+    <string name="Username">Username</string>
+    <string name="p_1">This user name and picture will be visible to</string>
+    <string name="p2"> your Chat users.Other users can find</string>
+    <string name="p3"> you through their contacts</string>
 
 
 </resources>
