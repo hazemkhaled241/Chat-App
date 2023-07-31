@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.hazem.chat.domain.model.Message
 import com.hazem.chat.domain.usecase.remote.chat.FetchMessagesBetweenTwoUsersUseCase
 import com.hazem.chat.domain.usecase.remote.chat.GetFirebaseCurrentUserUseCase
+import com.hazem.chat.domain.usecase.remote.chat.GetUserByIdUseCase
 import com.hazem.chat.domain.usecase.remote.chat.SendMessageUseCase
 import com.hazem.chat.domain.usecase.remote.shared_preference.GetFromSharedPreferenceUseCase
 import com.hazem.chat.domain.usecase.remote.shared_preference.SaveInSharedPreferenceUseCase
@@ -23,9 +24,10 @@ class SingleChatViewModel @Inject constructor(
     private val fetchMessagesBetweenTwoUsersUseCase: FetchMessagesBetweenTwoUsersUseCase,
     private val sendMessageUseCase: SendMessageUseCase,
     private val getFirebaseCurrentUserUseCase: GetFirebaseCurrentUserUseCase,
-    private val saveInSharedPreferenceUseCase: SaveInSharedPreferenceUseCase
+    private val saveInSharedPreferenceUseCase: SaveInSharedPreferenceUseCase,
+    private val getUserByIdUseCase: GetUserByIdUseCase,
 
-) :ViewModel() {
+    ) :ViewModel() {
     private var _chatRoomState = MutableStateFlow<SingleChatState>(SingleChatState.Init)
     val chatRoomState = _chatRoomState.asStateFlow()
     var scroll=true
@@ -43,7 +45,37 @@ class SingleChatViewModel @Inject constructor(
             }
         }
     }
+    fun fetchCurrentUserById(id: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            getUserByIdUseCase(id).let {
+                when (it) {
+                    is Resource.Error -> {
+                        withContext(Dispatchers.Main) {
+                            showError(it.message)
+                        }
+                    }
 
+                    is Resource.Success -> {
+                        _chatRoomState.value =
+                            SingleChatState.FetchCurrentUserSuccessfully(it.data)
+                    }
+                }
+            }
+        }
+    }
+    fun fetchReceiverUserById(id: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            getUserByIdUseCase(id).let {
+                when (it) {
+                    is Resource.Error -> showError(it.message)
+                    is Resource.Success -> {
+                        _chatRoomState.value =
+                            SingleChatState.FetchReceiverUserSuccessfully(it.data)
+                    }
+                }
+            }
+        }
+    }
     fun requestFetchMessagesBetweenTwoUsers(
         senderId: String,
         receiverId: String

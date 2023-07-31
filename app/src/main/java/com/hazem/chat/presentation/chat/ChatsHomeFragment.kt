@@ -134,7 +134,7 @@ class ChatsHomeFragment : Fragment(), OnItemClick<User> {
         dialog.dismiss()
     }
     override fun onItemClicked(item: User, position: Int) {
-        val action = ChatsHomeFragmentDirections.actionChatsHomeFragmentToSingleChatFragment(item)
+        val action = ChatsHomeFragmentDirections.actionChatsHomeFragmentToSingleChatFragment(item.userId)
         findNavController().navigate(action)
     }
 

@@ -3,11 +3,14 @@ package com.hazem.chat.data.repository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.hazem.chat.data.mapper.toUser
+import com.hazem.chat.data.remote.dto.UserDto
 import com.hazem.chat.domain.model.User
 import com.hazem.chat.domain.repository.remote.UserRepository
 import com.hazem.chat.utils.Constants
 import com.hazem.chat.utils.Constants.Companion.USER_FIRESTORE_COLLECTION
 import com.hazem.chat.utils.Resource
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
@@ -32,6 +35,24 @@ class UserRepositoryImp @Inject constructor(
             }
         } catch (e: Exception) {
             Resource.Error(message = e.message.toString())
+        }
+    }
+
+    override suspend fun getUserById(id: String): Resource<User, String> {
+        return try {
+            withTimeout(Constants.TIMEOUT) {
+
+                delay(500) // to show loading progress
+                val querySnapshot = fireStore.collection(USER_FIRESTORE_COLLECTION).document(id)
+                    .get()
+                    .await()
+                val userDto = querySnapshot.toObject(UserDto::class.java)
+                Resource.Success(
+                    data = userDto!!.toUser()
+                )
+            }
+        } catch (e: Exception) {
+            Resource.Error(e.message.toString())
         }
     }
 }

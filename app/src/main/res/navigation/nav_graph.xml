@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/userInfoFragment">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -79,8 +79,9 @@
         android:label="fragment_single_chat"
         tools:layout="@layout/fragment_single_chat" >
         <argument
-            android:name="user"
-            app:argType="com.hazem.chat.domain.model.User" />
+            android:name="ownerId"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/splashFragment"

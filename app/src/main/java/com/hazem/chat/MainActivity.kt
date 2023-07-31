@@ -2,7 +2,6 @@ package com.hazem.chat
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -10,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.hazem.chat.databinding.ActivityMainBinding
-
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,6 +41,9 @@ class MainActivity : AppCompatActivity() {
                     binding.bottomNavigationView.visibility = View.GONE
                 }
                 R.id.userInfoFragment -> {
+                    binding.bottomNavigationView.visibility = View.GONE
+                }
+                R.id.singleChatFragment -> {
                     binding.bottomNavigationView.visibility = View.GONE
                 }
                 else -> {

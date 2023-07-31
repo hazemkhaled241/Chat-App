@@ -1,7 +1,6 @@
 package com.hazem.chat.data.repository
 
 import android.net.Uri
-import android.util.Log
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -204,7 +203,6 @@ override suspend fun getRegisteredContactsSuccessfully(contacts:ArrayList<Contac
                 fcmMessageDto = fcmMessageDto,
                 token = token
             )
-            Log.d("kkkk", notificationDto.toString())
             fcmApiService.sendNotification(notificationDto = notificationDto)
         }
     }

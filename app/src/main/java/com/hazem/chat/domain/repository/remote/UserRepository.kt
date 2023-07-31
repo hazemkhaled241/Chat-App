@@ -7,4 +7,5 @@ import com.hazem.chat.utils.Resource
 interface UserRepository {
     fun getFirebaseCurrentUser(): FirebaseUser?
     suspend fun updateProfile(userId: String,user:User): Resource<String, String>
+    suspend fun getUserById(id: String): Resource<User, String>
 }

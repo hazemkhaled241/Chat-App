@@ -18,10 +18,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseUser
 import com.hazem.chat.databinding.FragmentSingleChatBinding
 import com.hazem.chat.domain.model.Message
+import com.hazem.chat.domain.model.User
 import com.hazem.chat.presentation.chat.adapter.MessageAdapter
 import com.hazem.chat.presentation.chat.viewmodel.SingleChatState
 import com.hazem.chat.presentation.chat.viewmodel.SingleChatViewModel
@@ -47,10 +47,12 @@ class SingleChatFragment : Fragment() {
     private var messages: ArrayList<Message> = arrayListOf()
     private val messageAdapter: MessageAdapter by lazy { MessageAdapter() }
     private lateinit var dialog: Dialog
-    private val args: SingleChatFragmentArgs by navArgs()
+    //private val args: SingleChatFragmentArgs by navArgs()
     private lateinit var listener: ViewTreeObserver.OnGlobalLayoutListener
     private  var receiverUserId: String? = null
     private lateinit var imageUris: Uri
+    private var currentUser: User? = null
+    private var receiverUser: User? = null
 
 
     override fun onCreateView(
@@ -68,12 +70,20 @@ class SingleChatFragment : Fragment() {
         firebaseCurrentUser = singleChatViewModel.getFirebaseCurrentUser()
         dialog = requireContext().createAlertDialog(requireActivity())
 
-        receiverUserId = args.user.userId
-        binding.tvUserName.text =args.user.name
+        receiverUserId = arguments?.getString("ownerId")
+        if (receiverUserId == null) {
+            arguments?.let {
+                receiverUserId = it.getString("userId", "")
+            }
+        }
+        receiverUserId?.let {
+            singleChatViewModel.fetchReceiverUserById(it)
+            fetchMessagesBetweenTwoUsers(it)
+        }
         binding.ivBack.setOnClickListener {
             findNavController().popBackStack()
         }
-        fetchMessagesBetweenTwoUsers()
+
         binding.btnSendMessage.setOnClickListener {
             val message = prepareMessage()
             singleChatViewModel.requestSendMessage(message)
@@ -91,12 +101,14 @@ class SingleChatFragment : Fragment() {
         binding.rvMessages.adapter = messageAdapter
     }
 
-    private fun fetchMessagesBetweenTwoUsers() {
-        firebaseCurrentUser?.uid?.let { currentId ->
-            singleChatViewModel.requestFetchMessagesBetweenTwoUsers(
-                senderId = currentId,
-                receiverId = receiverUserId!!
-            )
+    private fun fetchMessagesBetweenTwoUsers(receiverUserId: String) {
+        if (messages.isEmpty()) {
+            firebaseCurrentUser?.uid?.let { currentId ->
+                singleChatViewModel.requestFetchMessagesBetweenTwoUsers(
+                    senderId = currentId,
+                    receiverId = receiverUserId
+                )
+            }
         }
     }
     private fun prepareMessage(): Message {
@@ -200,9 +212,33 @@ class SingleChatFragment : Fragment() {
                         showMessages(messages)
                     }
                     is SingleChatState.ShowError -> handleErrorState(it.message)
+                    is SingleChatState.FetchReceiverUserSuccessfully -> {
+                        receiverUserId = it.user.userId
+                        receiverUser = it.user
+                        // fetchMessagesBetweenTwoUsers(receiverUserId = it.user.id)
+                        showReceiverData(receiverUser = it.user)
+
+                        firebaseCurrentUser?.uid?.let { currUserId ->
+                            fetchCurrentUserById(currUserId)
+                        }
+                    }
+                    is SingleChatState.FetchCurrentUserSuccessfully -> {
+                        currentUser = it.user
+                    }
                 }
             }
         }
+    }
+    private fun fetchCurrentUserById(currentUserId: String) {
+        if (currentUser == null) {
+            singleChatViewModel.fetchCurrentUserById(currentUserId)
+        }
+    }
+    private fun showReceiverData(receiverUser: User) {
+        /*binding.ivUser.load(receiverUser.userImage) {
+            crossfade(200)
+        }*/
+        binding.tvUserName.text = receiverUser.name
     }
     private fun handleKeyboard() {
         listener = ViewTreeObserver.OnGlobalLayoutListener {
