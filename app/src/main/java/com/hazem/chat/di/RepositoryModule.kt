@@ -39,13 +39,15 @@ object RepositoryModule {
         fireStore: FirebaseFirestore,
         auth: FirebaseAuth,
         sharedPrefs: SharedPrefs,
-        fcm: FirebaseMessaging
+        fcm: FirebaseMessaging,
+        storageReference: StorageReference
     ): LoginRepository {
         return LoginRepositoryImp(
             auth,
             fireStore,
             sharedPrefs,
-            fcm
+            fcm,
+            storageReference
         )
     }
 

@@ -1,6 +1,7 @@
 package com.hazem.chat.data.repository
 
 import android.app.Activity
+import android.net.Uri
 import android.util.Log
 
 import com.hazem.chat.domain.repository.remote.LoginRepository
@@ -11,6 +12,7 @@ import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.storage.StorageReference
 import com.hazem.chat.data.mapper.toUserDto
 import com.hazem.chat.domain.model.User
 import com.hazem.chat.utils.Constants
@@ -18,10 +20,13 @@ import com.hazem.chat.utils.Constants.Companion.USERNAME_KEY
 import com.hazem.chat.utils.Constants.Companion.USER_FIRESTORE_COLLECTION
 import com.hazem.chat.utils.Constants.Companion.USER_ID_KEY
 import com.hazem.chat.utils.SharedPrefs
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -30,7 +35,8 @@ class LoginRepositoryImp @Inject constructor(
     private val auth: FirebaseAuth,
     private val fireStore: FirebaseFirestore,
     private val sharedPrefs: SharedPrefs,
-    private val fcm: FirebaseMessaging
+    private val fcm: FirebaseMessaging,
+    private val storageReference: StorageReference
 ) : LoginRepository {
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
     private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
@@ -159,10 +165,78 @@ class LoginRepositoryImp @Inject constructor(
             Resource.Error(e.message.toString())
         }
     }
+
+    private suspend fun uploadImageToStorage(
+        userId: String,
+        imageUri: Uri
+    ): Resource<Uri, String> {
+        return try {
+            withTimeout(Constants.TIMEOUT_UPLOAD) {
+                val uri: Uri = withContext(Dispatchers.IO) {
+                    storageReference.child(
+                        "$userId/${imageUri.lastPathSegment ?: System.currentTimeMillis()}"
+                    )
+                        .putFile(imageUri)
+                        .await()
+                        .storage
+                        .downloadUrl
+                        .await()
+                }
+                Resource.Success(uri)
+            }
+        } catch (e: Exception) {
+            Resource.Error(e.message.toString())
+        }
+    }
+
+    override suspend fun saveUserData(
+        userName: String,
+        uri: Uri
+    ): Resource<String, String> {
+        if (uri.toString().isNotEmpty()) {
+            return try {
+                withTimeout(Constants.TIMEOUT) {
+                    when (
+                        val result =
+                            uploadImageToStorage(
+                                sharedPrefs.get(USER_ID_KEY, String::class.java),
+                                uri
+                            )
+                    ) {
+                        is Resource.Error -> Resource.Error(result.message)
+                        is Resource.Success -> {
+                            fireStore.collection(USER_FIRESTORE_COLLECTION)
+                                .document(sharedPrefs.get(USER_ID_KEY, String::class.java))
+                                .update("name", userName, "url", uri.toString())
+                                .await()
+                            Resource.Success("Saved successfully")
+                        }
+                    }
+
+                }
+            } catch (e: Exception) {
+                Resource.Error(message = e.message.toString())
+            }
+        } else {
+            return try {
+                withTimeout(Constants.TIMEOUT) {
+                    fireStore.collection(USER_FIRESTORE_COLLECTION)
+                        .document(sharedPrefs.get(USER_ID_KEY, String::class.java))
+                        .update("name", userName)
+                        .await()
+                    Resource.Success("Saved successfully")
+                }
+            } catch (e: Exception) {
+                Resource.Error(message = e.message.toString())
+            }
+        }
+    }
+
     private fun updateToken(userId: String, token: String) {
         fireStore.collection(Constants.TOKENS_FIIRESTORE_COLLECTION).document(userId)
             .set(hashMapOf("token" to token))
     }
+
     override fun <T> saveInSharedPreference(key: String, data: T) {
         sharedPrefs.put(key, data)
     }
@@ -204,5 +278,6 @@ class LoginRepositoryImp @Inject constructor(
             str
         }
     }
+
 
 }

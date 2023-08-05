@@ -1,6 +1,7 @@
 package com.hazem.chat.domain.repository.remote
 
 import android.app.Activity
+import android.net.Uri
 import com.google.firebase.auth.PhoneAuthCredential
 import com.hazem.chat.domain.model.User
 import com.hazem.chat.utils.Resource
@@ -14,6 +15,7 @@ interface LoginRepository {
     suspend fun resendOtpCode(phoneNumber: String, activity: Activity)
     suspend fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential,user:User): Resource<String, String>
     suspend fun  login(user: User): Resource<String, String>
+    suspend fun  saveUserData(userName: String,uri: Uri): Resource<String, String>
     fun <T> getFromSharedPreference(key: String, clazz: Class<T>): T
     fun <T> saveInSharedPreference(key: String, data: T)
 }
