@@ -12,10 +12,12 @@ import androidx.navigation.fragment.findNavController
 import com.hazem.chat.R
 import com.hazem.chat.databinding.FragmentSplashBinding
 import com.hazem.chat.presentation.splash.viewmodel.SplashViewModel
+import com.hazem.chat.utils.Constants.Companion.COUNTRIES_SAVED
 import com.hazem.chat.utils.Constants.Companion.HANDLER_DELAY
 import com.hazem.chat.utils.Constants.Companion.IS_LOGGED_IN_KEY
 import com.hazem.chat.utils.countries
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class SplashFragment : Fragment() {
@@ -28,6 +30,9 @@ class SplashFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentSplashBinding.inflate(inflater, container, false)
+        if (!splashViewModel.getFromSP(COUNTRIES_SAVED, Boolean::class.java)){
+        insertCountries()
+        }
         return binding.root
     }
 
@@ -42,9 +47,13 @@ class SplashFragment : Fragment() {
         if (splashViewModel.getFromSP(IS_LOGGED_IN_KEY, Boolean::class.java)) {
             findNavController().navigate(R.id.action_splashFragment_to_chatsHomeFragment)
         } else {
-            insertCountries()
-            findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
+            //val countries = lifecycleScope.async {
 
+            //}
+            //countries.wait()
+         //  if(countries.isCompleted){
+            findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
+        //}
         }
     }
 
@@ -52,5 +61,6 @@ class SplashFragment : Fragment() {
         for (country in countries()) {
             splashViewModel.insertCountry(country)
         }
+       splashViewModel.saveInSP(COUNTRIES_SAVED,true)
     }
 }
