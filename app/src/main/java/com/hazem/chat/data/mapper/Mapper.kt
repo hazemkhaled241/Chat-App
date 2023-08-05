@@ -10,7 +10,8 @@ fun User.toUserDto(): UserDto {
     return UserDto(
         userId = this.userId,
         phoneNumber = this.phoneNumber,
-        name = this.name
+        name = this.name,
+        url = this.uri.toString()
     )
 }
 
@@ -18,7 +19,8 @@ fun UserDto.toUser(): User {
     return User(
         userId = this.userId,
         phoneNumber = this.phoneNumber,
-        name = this.name
+        name = this.name,
+        uri = Uri.parse(this.url)
     )
 }
 fun MessageDto.toMessage(): Message {
