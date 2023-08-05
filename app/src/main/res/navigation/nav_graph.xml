@@ -57,12 +57,12 @@
         <argument
             android:name="verificationID"
             app:argType="string" />
-        <action
-            android:id="@+id/action_verifyFragment_to_chatsHomeFragment"
-            app:destination="@id/chatsHomeFragment" />
         <argument
             android:name="user"
             app:argType="com.hazem.chat.domain.model.User" />
+        <action
+            android:id="@+id/action_verifyFragment_to_userInfoFragment"
+            app:destination="@id/userInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatsHomeFragment"
@@ -107,5 +107,9 @@
         android:id="@+id/userInfoFragment"
         android:name="com.hazem.chat.presentation.user_info.UserInfoFragment"
         android:label="fragment_user_info"
-        tools:layout="@layout/fragment_user_info" />
+        tools:layout="@layout/fragment_user_info" >
+        <action
+            android:id="@+id/action_userInfoFragment_to_chatsHomeFragment"
+            app:destination="@id/chatsHomeFragment" />
+    </fragment>
 </navigation>
