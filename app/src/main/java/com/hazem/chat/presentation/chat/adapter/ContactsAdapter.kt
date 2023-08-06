@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.hazem.chat.databinding.ChatItemBinding
 import com.hazem.chat.domain.model.User
 import com.hazem.chat.presentation.login.adapter.OnItemClick
@@ -18,6 +19,7 @@ class ContactsAdapter : RecyclerView.Adapter<ContactsAdapter.MyViewHolder>() {
             binding.layout.setOnClickListener {
                 onItemClicked?.onItemClicked(user,position)
             }
+            binding.ivUser.load(user.uri)
         }
     }
 

@@ -10,6 +10,7 @@ class Constants {
         const val USER_ID_KEY = "user_id"
         const val USERNAME_KEY = "user_name"
         const val IS_LOGGED_IN_KEY = "is_logged_in"
+        const val COUNTRIES_SAVED = "countries_saved"
 
         //time out
         const val TIMEOUT_UPLOAD = 12000L
@@ -17,9 +18,9 @@ class Constants {
 
         // Storage
         const val FIREBASE_STORAGE_ROOT_DIRECTORY = "app"
+
         //collection
-        const val USER_FIRESTORE_COLLECTION= "users"
-        const val MY_CHATS_FIIRESTORE_COLLECTION: String = "my_chats"
+        const val USER_FIRESTORE_COLLECTION = "users"
         const val MESSAGES_FIIRESTORE_COLLECTION: String = "Messages"
         const val CHATS_FIIRESTORE_COLLECTION: String = "Chats"
         const val TOKENS_FIIRESTORE_COLLECTION: String = "Tokens"
