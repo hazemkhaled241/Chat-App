@@ -2,6 +2,7 @@ package com.hazem.chat.presentation.login
 
 import android.app.Dialog
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.telephony.TelephonyManager
 import android.util.Log
@@ -24,7 +25,7 @@ import com.hazem.chat.presentation.login.viewmodel.SharedViewModel
 import com.hazem.chat.utils.createAlertDialog
 import com.google.android.material.snackbar.Snackbar
 import com.hazem.chat.domain.model.User
-import com.hazem.chat.utils.countries
+import com.hazem.chat.presentation.login.viewmodel.CurrCountryNoCodeState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -34,7 +35,7 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
     private val args: LoginFragmentArgs by navArgs()
     private var allCountries: ArrayList<Country> = arrayListOf()
-    private var currCountry: Country = Country(0, "EG", "Egypt", "+20", "EGP")
+    private lateinit var currCountry: Country
     private lateinit var code: String
     private val countriesViewModel: CountriesViewModel by viewModels()
     private val loginViewModel: LoginViewModel by viewModels()
@@ -66,6 +67,7 @@ class LoginFragment : Fragment() {
             verifyNumber(binding.edtMobile.text.toString())
 
         }
+        observeOnCurrCountryCode()
 
     }
 
@@ -100,7 +102,7 @@ class LoginFragment : Fragment() {
 
                         val action =
                             LoginFragmentDirections.actionLoginFragmentToVerifyFragment(it.message,
-                                User("",binding.edtMobile.text.toString(),"maged")
+                                User("",binding.edtMobile.text.toString(),"", Uri.parse(""))
                             )
                         findNavController().navigate(action)
                         //}
@@ -112,12 +114,33 @@ class LoginFragment : Fragment() {
         }
     }
 
-
+    private fun observeOnCurrCountryCode() {
+        lifecycleScope.launch {
+            loginViewModel.currCountryNoCode.collect {
+                when (it) {
+                    CurrCountryNoCodeState.Init -> Unit
+                    is CurrCountryNoCodeState.ShowError -> {
+                        Snackbar.make(
+                            requireActivity().findViewById(android.R.id.content),
+                            it.message,
+                            2000
+                        ).show()
+                        currCountry=Country(0,"TL", "East Timor", "+670", "USD")
+                    }
+                    is CurrCountryNoCodeState.GetCurrCountryNoCodeSuccessfully -> {
+                        currCountry=it.date
+                        binding.txtCountryCode.text = it.date.noCode
+                    }
+                }
+            }
+        }
+    }
     private fun start() {
         if (findNavController().previousBackStackEntry?.destination?.id == R.id.allCountriesFragment && args.countryItem.code.isNotEmpty()) {
             setArgs()
         } else
-            getAllCountries()
+              getAllCountries()
+
     }
 
     private fun setArgs() {
@@ -132,10 +155,13 @@ class LoginFragment : Fragment() {
             val manager =
                 requireActivity().getSystemService(Context.TELEPHONY_SERVICE) as (TelephonyManager)?
             manager?.let {
-                code = manager.networkCountryIso?.trim() ?: "+20"
-                if (code.isEmpty())
-                    return
-                setCodeNumber()
+                code = manager.networkCountryIso?.trim() ?: "EC"
+               /* if (code.isEmpty())
+                    code=""*/
+
+                Log.d("hhhh", allCountries.size.toString())
+
+                loginViewModel.getCurrCountryCode(code,allCountries)
 
 
             }
@@ -144,33 +170,26 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun setCodeNumber() {
-        currCountry = allCountries.first {
-            it.code.equals(code, true)
-        }
-        binding.txtCountryCode.text = currCountry.noCode
-    }
+
 
     private fun getAllCountries() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            countriesViewModel.countryState.collect {
+        lifecycleScope.launch {
+           countriesViewModel.countryState.collect{
                 if (it != null) {
                     allCountries = it as ArrayList<Country>
+                    Log.d("hhhh", "ok")
                     setDefaultCountryCode()
                 }
             }
 
+
+
         }
 
 
     }
 
-    private fun insertCountries() {
-        for (country in countries()) {
-            countriesViewModel.insertCountry(country)
-        }
-        allCountries = countries()
-    }
+
 
 
     private fun handleLoadingState(isLoading: Boolean) {
