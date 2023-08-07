@@ -1,4 +1,4 @@
-package com.hazem.chat.presentation.profile
+package com.hazem.chat.presentation.profile.viewmodel
 
 
 

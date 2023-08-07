@@ -56,11 +56,12 @@ object RepositoryModule {
     fun provideUserRepository(
         auth: FirebaseAuth,
         fireStore: FirebaseFirestore,
-
+        storageReference: StorageReference
         ): UserRepository {
         return UserRepositoryImp(
             auth,
-            fireStore
+            fireStore,
+            storageReference
         )
     }
 
